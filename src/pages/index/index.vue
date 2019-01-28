@@ -9,7 +9,7 @@
     </div>
     <!-- 轮播图 -->
     <div class="swiper-container">
-      <swiper indicator-dots autoplay >
+      <swiper indicator-dots autoplay>
         <swiper-item v-for="item in swiperList" :key="item.image_src">
           <img :src="item.image_src" class="slide-image" width="355" height="150">
         </swiper-item>
@@ -22,8 +22,8 @@
         <p>{{item.name}}</p>
       </div>
     </div>
-    
-     <!-- 楼层区域 -->
+
+    <!-- 楼层区域 -->
     <div class="floor-container">
       <div class="floor" v-for="item in floorList">
         <!-- 顶部 -->
@@ -37,6 +37,18 @@
         </div>
       </div>
     </div>
+    <div class="bottom-line">
+      <icon class="iconfont icon-xiao"></icon>
+      到底了
+    </div>
+    <!-- <div class="backTop">
+      <icon class="iconfont icon-jiantoushang"></icon>
+      顶部
+    </div> -->
+    <div class="backTop" @click="backTop" v-show="isShow">
+      <i class="iconfont icon-jiantoushang"></i>
+      顶部
+    </div>
   </div>
 </template>
 
@@ -47,9 +59,26 @@ export default {
     return {
       swiperList: [],
       categoryList: [],
-      floorList:[],
-
+      floorList: [],
+      isShow:false,
     };
+  },
+  // 滚动事件
+  onPageScroll(event){
+    if(event.scrollTop>170){
+      this.isShow = true;
+    }else{
+      this.isShow = false;
+    }
+  },
+
+  methods: {
+    backTop(){
+      wx.pageScrollTo({
+        scrollTop: 0, //滚动到页面的目标位置（单位px）,
+        duration: 300 //滚动动画的时长，默认300ms，单位 ms,
+      });
+    }
   },
   async created() {
     let swiperRes = await hxios.get({
@@ -61,13 +90,12 @@ export default {
       url: "api/public/v1/home/catitems"
     });
     this.categoryList = navigateRes.data.message;
-      // 获取楼层数据
+    // 获取楼层数据
     let floorRes = await hxios.get({
       url: "api/public/v1/home/floordata"
     });
     console.log(floorRes);
     this.floorList = floorRes.data.message;
-
   }
 };
 </script>
@@ -80,6 +108,9 @@ $ured: #ff2d4a;
   box-sizing: border-box;
   width: 100%;
   position: fixed;
+  z-index: 998;
+  left: 0;
+  top: 0;
 
   input {
     display: block;
@@ -100,34 +131,39 @@ $ured: #ff2d4a;
 }
 // 轮播
 .swiper-container {
+  // margin-top:60rpx;
   swiper {
+    margin-top: 98rpx;
     height: 340rpx;
     swiper-item {
       height: 100%;
     }
-  }
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 // 分类列表样式
 .category-container {
   display: flex;
   padding-top: 24rpx;
-  padding: 20rpx;
+  padding: 29rpx;
+  background-color: #fff;
   .item {
-    flex: 1 ;
+    flex: 1;
     img {
-      width: 120rpx;
-      height: 120rpx;
-      margin:0 auto;
+      display: block;
+      width: 128rpx;
+      height: 128rpx;
+      margin: 0 auto;
     }
     p {
       text-align: center;
-      font-size: 24rpx;
+      font-size: 30rpx;
       margin-top: 10rpx;
+      color: yellowgreen;
     }
   }
 }
@@ -180,5 +216,35 @@ $ured: #ff2d4a;
       }
     }
   }
+}
+// 底线部分
+.bottom-line{
+  display: flex;
+  justify-content: center;
+  // color: #999999;
+  // font-size: 24rpx;
+  // margin-top: 20rpx;
+}
+// 顶部
+// .backTop{
+//   position: fixed;
+//   bottom: 15rpx;
+//   right: 15rpx;
+//   text-align: center;
+//   height: 90rpx;
+//   width: 90rpx;
+//   border-radius: 50%;
+// }
+// 返回顶部
+.backTop {
+  position: fixed;
+  bottom: 15rpx;
+  right: 15rpx;
+  text-align: center;
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+  background: #0094ff;
+  font-size: 26rpx;
 }
 </style>
