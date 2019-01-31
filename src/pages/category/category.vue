@@ -1,7 +1,7 @@
 <template>
   <div class="category-container">
     <!-- 抽取的组件名 -->
-    <searchbox></searchbox>
+    <searchBox></searchBox>
     <div class="scroll-box">
       <!-- 左边盒子 -->
       <scroll-view class="left" scroll-y scroll-with-animation>
@@ -24,7 +24,7 @@
 
 <script>
 // 导入抽取的组件
-import searchbox from "../../components/searchBox";
+import searchBox from "../../components/searchBox";
 // 导入hxios
 import hxios from "../../utils/index.js";
 
@@ -37,14 +37,14 @@ export default {
   },
   // 注册组件
   components:{
-    searchbox
+    searchBox
   },
   // 获取数据
   async created() {
     let res = await hxios.get({
       url: "api/public/v1/categories"
     });
-    console.log(res);
+    // console.log(res);
     this.categoryList = res.data.message;
   }
 };

@@ -1,12 +1,13 @@
 <template>
   <div>
     <!-- 顶部搜索 -->
-    <div class="index-container">
+    <!-- <div class="index-container">
       <div class="search-box">
         <input type="text" placeholder="搜索">
         <icon type="search" size="12"></icon>
       </div>
-    </div>
+    </div> -->
+    <searchBox></searchBox>
     <!-- 轮播图 -->
     <div class="swiper-container">
       <swiper indicator-dots autoplay>
@@ -54,6 +55,7 @@
 
 <script>
 import hxios from "../../utils/index.js";
+import searchBox from "../../components/searchBox";
 export default {
   data() {
     return {
@@ -81,54 +83,75 @@ export default {
     }
   },
   async created() {
-    let swiperRes = await hxios.get({
+    // let swiperRes = await hxios.get({
+    //   url: "api/public/v1/home/swiperdata"
+    // });
+   
+    // // console.log(swiperRes);
+    // this.swiperList = swiperRes.data.message;
+    // let navigateRes = await hxios.get({
+    //   url: "api/public/v1/home/catitems"
+    // });
+    // this.categoryList = navigateRes.data.message;
+    // // 获取楼层数据
+    // let floorRes = await hxios.get({
+    //   url: "api/public/v1/home/floordata"
+    // });
+    // // console.log(floorRes);
+    // this.floorList = floorRes.data.message;
+
+    // 简化
+     let p1 =hxios.get({
       url: "api/public/v1/home/swiperdata"
     });
-    // console.log(swiperRes);
-    this.swiperList = swiperRes.data.message;
-    let navigateRes = await hxios.get({
+    let p2 = hxios.get({
       url: "api/public/v1/home/catitems"
     });
-    this.categoryList = navigateRes.data.message;
-    // 获取楼层数据
-    let floorRes = await hxios.get({
+    let p3 = hxios.get({
       url: "api/public/v1/home/floordata"
     });
-    console.log(floorRes);
-    this.floorList = floorRes.data.message;
+    // 一次发送所有请求
+    let totalRes = await Promise.all([p1,p2,p3]);
+    this.swiperList = totalRes[0].data.message;
+    this.categoryList = totalRes[1].data.message;
+    this.floorList= totalRes[2].data.message;
+  },
+  //注册组件
+  components:{
+    searchBox
   }
 };
 </script>
 
 <style lang="scss">
 $ured: #ff2d4a;
-.search-box {
-  background-color: $ured;
-  padding: 20rpx 16rpx;
-  box-sizing: border-box;
-  width: 100%;
-  position: fixed;
-  z-index: 998;
-  left: 0;
-  top: 0;
+// .search-box {
+//   background-color: $ured;
+//   padding: 20rpx 16rpx;
+//   box-sizing: border-box;
+//   width: 100%;
+//   position: fixed;
+//   z-index: 998;
+//   left: 0;
+//   top: 0;
 
-  input {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    padding-left: 376rpx;
-    background-color: white;
-    font-size: 24rpx;
-    height: 60rpx;
-    border-radius: 10rpx;
-  }
-  icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-}
+//   input {
+//     display: block;
+//     width: 100%;
+//     box-sizing: border-box;
+//     padding-left: 376rpx;
+//     background-color: white;
+//     font-size: 24rpx;
+//     height: 60rpx;
+//     border-radius: 10rpx;
+//   }
+//   icon {
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//   }
+// }
 // 轮播
 .swiper-container {
   // margin-top:60rpx;

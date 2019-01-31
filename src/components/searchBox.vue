@@ -1,11 +1,18 @@
 <template>
   <div class="search-box">
-    <input type="text" placeholder="搜索">
+    <input @click="toSearch" type="text" placeholder="搜索">
     <icon type="search" size="12"></icon>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  // 编程式导航
+  methods: {
+    toSearch(){
+      wx.navigateTo({ url: '/pages/search/main' });
+    }
+  },
+};
 </script>
 <style lang="scss">
 $uRed: #ff2d4a;
