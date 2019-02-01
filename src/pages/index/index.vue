@@ -82,7 +82,9 @@ export default {
       });
     }
   },
-  async created() {
+  //性能优化 选择不同生命周期钩子实现
+  // async created
+  async onLoad() {
     // let swiperRes = await hxios.get({
     //   url: "api/public/v1/home/swiperdata"
     // });
